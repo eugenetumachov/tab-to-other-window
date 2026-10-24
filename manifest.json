@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Move Tab to Other Window",
+  "version": "1.0.0",
+  "description": "Moves the current tab to the other Chrome window.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Move tab to other window",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+M",
+        "mac": "Alt+Shift+M"
+      }
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
