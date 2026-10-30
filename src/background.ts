@@ -1,4 +1,4 @@
-import { getNormalWindows, moveTab } from "./move-tab.js";
+import { getNormalWindows, moveTab, type MoveTabMessage } from "./move-tab.js";
 
 /**
  * With more than 2 windows the action opens a popup to pick the target window,
@@ -16,11 +16,13 @@ chrome.runtime.onStartup.addListener(updatePopup);
 chrome.windows.onCreated.addListener(updatePopup);
 chrome.windows.onRemoved.addListener(updatePopup);
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (message.type !== "moveTab") return;
-  sendResponse();
-  moveTab(message.tabId, message.windowId);
-});
+chrome.runtime.onMessage.addListener(
+  (message: MoveTabMessage, _sender, sendResponse) => {
+    if (message.type !== "moveTab") return;
+    sendResponse();
+    moveTab(message.tabId, message.windowId);
+  },
+);
 
 /**
  * Move current tab to another window of the same profile, or create a new window if none exists.
@@ -32,7 +34,9 @@ chrome.action.onClicked.addListener(async (tab) => {
   const windows = await getNormalWindows();
   const target = windows.find((w) => w.id !== tab.windowId);
 
-  if (!target) {
+  if (tab.id === undefined) return;
+
+  if (target?.id === undefined) {
     await chrome.windows.create({ tabId: tab.id, focused: true });
     return;
   }

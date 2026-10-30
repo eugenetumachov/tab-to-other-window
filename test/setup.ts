@@ -3,5 +3,5 @@ import { afterEach, vi } from "vitest";
 
 afterEach(() => {
   vi.resetModules();
-  delete globalThis.chrome;
+  Reflect.deleteProperty(globalThis, "chrome");
 });

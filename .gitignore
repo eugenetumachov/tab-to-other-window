@@ -1,2 +1,7 @@
 node_modules/
 coverage/
+
+# Build output (npm run build)
+/background.js
+/move-tab.js
+/popup.js

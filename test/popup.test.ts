@@ -2,7 +2,7 @@
 import { screen } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, it, vi } from "vitest";
-import { createWindow, installChromeMock } from "./chrome-mock.js";
+import { createWindow, installChromeMock } from "./chrome-mock.ts";
 
 const windows = [
   createWindow(1, { tabs: [{ id: 10, title: "Source tab" }] }),
@@ -24,7 +24,7 @@ const windows = [
 
 async function openPopup() {
   const chrome = installChromeMock({ windows, currentWindowId: 1 });
-  await import("../popup.js");
+  await import("../src/popup.ts");
   return chrome;
 }
 
@@ -46,7 +46,9 @@ it("shows the active tab favicon for each window", async () => {
   await openPopup();
 
   const [inbox] = screen.getAllByRole("menuitem");
-  const favicon = new URL(inbox.querySelector("img").src);
+  const img = inbox.querySelector("img");
+  expect(img).not.toBeNull();
+  const favicon = new URL(img!.src);
   expect(favicon.pathname).toBe("/_favicon/");
   expect(favicon.searchParams.get("pageUrl")).toBe("https://mail.example.com/");
 });

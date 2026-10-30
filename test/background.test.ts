@@ -1,13 +1,22 @@
 import { describe, expect, it } from "vitest";
-import { createWindow, installChromeMock } from "./chrome-mock.js";
+import {
+  type ChromeMock,
+  createWindow,
+  type FakeWindow,
+  installChromeMock,
+} from "./chrome-mock.ts";
 
-async function loadBackground(windows) {
+async function loadBackground(windows: FakeWindow[]) {
   const chrome = installChromeMock({ windows });
-  await import("../background.js");
+  await import("../src/background.ts");
   return chrome;
 }
 
-function expectMovedAndActivated(chrome, tabId, windowId) {
+function expectMovedAndActivated(
+  chrome: ChromeMock,
+  tabId: number,
+  windowId: number,
+) {
   expect(chrome.tabs.move).toHaveBeenCalledWith(tabId, { windowId, index: -1 });
   expect(chrome.tabs.update).toHaveBeenCalledWith(tabId, { active: true });
   expect(chrome.windows.update).toHaveBeenCalledWith(windowId, {

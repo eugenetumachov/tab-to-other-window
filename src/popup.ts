@@ -1,15 +1,17 @@
-import { getNormalWindows } from "./move-tab.js";
+import { getNormalWindows, type MoveTabMessage } from "./move-tab.js";
 
 const source = await chrome.windows.getCurrent({ populate: true });
-const sourceTab = source.tabs.find((t) => t.active);
+const sourceTab = source.tabs?.find((t) => t.active);
 const targets = (await getNormalWindows({ populate: true })).filter(
   (w) => w.id !== source.id,
 );
 
-const list = document.getElementById("windows");
+// popup.html always contains the #windows element.
+const list = document.getElementById("windows")!;
 
 for (const target of targets) {
-  const activeTab = target.tabs.find((t) => t.active);
+  const tabs = target.tabs ?? [];
+  const activeTab = tabs.find((t) => t.active);
   const button = document.createElement("button");
   button.setAttribute("role", "menuitem");
 
@@ -27,13 +29,14 @@ for (const target of targets) {
 
   const count = document.createElement("span");
   count.className = "count";
-  count.textContent = `${target.tabs.length} tab${target.tabs.length === 1 ? "" : "s"}`;
+  count.textContent = `${tabs.length} tab${tabs.length === 1 ? "" : "s"}`;
 
   button.append(favicon, title, count);
   button.addEventListener("click", async () => {
     // The popup gets closed as soon as the tab leaves its window,
     // so the move runs in the service worker to complete reliably.
-    await chrome.runtime.sendMessage({
+    if (sourceTab?.id === undefined || target.id === undefined) return;
+    await chrome.runtime.sendMessage<MoveTabMessage>({
       type: "moveTab",
       tabId: sourceTab.id,
       windowId: target.id,
