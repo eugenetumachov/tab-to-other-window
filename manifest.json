@@ -3,8 +3,13 @@
   "name": "Move Tab to Other Window",
   "version": "1.0.0",
   "description": "Moves the current tab to the other Chrome window.",
+  "permissions": [
+    "tabs",
+    "favicon"
+  ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "action": {
     "default_title": "Move tab to other window",
