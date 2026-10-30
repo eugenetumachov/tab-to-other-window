@@ -3,12 +3,18 @@
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
-    "lib": ["ES2022", "DOM"],
-    "types": ["chrome"],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "types": [
+      "chrome"
+    ],
     "strict": true,
     "rootDir": "src",
-    "outDir": "."
+    "outDir": "dist"
   },
-  "include": ["src"],
-  "exclude": []
+  "include": [
+    "src"
+  ]
 }
