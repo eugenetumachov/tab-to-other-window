@@ -1,6 +1,6 @@
 # tab-to-other-window
 
-Chrome extension that moves the current tab to your other Chrome window. With more than 2 windows, clicking the icon (or `Alt+Shift+M`) shows a list of windows to pick from.
+Chrome extension that moves the current tab to your other Chrome window. With more than 2 windows, clicking the icon shows a list of windows to pick from.
 
 ## Setup
 
